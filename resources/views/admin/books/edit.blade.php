@@ -31,8 +31,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="year">Year Book</label>
-                    <input type="number" class="form-control" id="year" name="year" placeholder="Input year book" value="{{ $book->year }}">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Input isbn number" value="{{ $book->isbn }}">
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="release_date">Release Book</label>
+                    <input type="date" class="form-control" id="release_date" name="release_date" placeholder="Input release book" value="{{ $book->release_date }}" max="{{ date('Y-m-d') }}">
                     <div class="invalid-feedback"></div>
                 </div>
 
@@ -109,7 +115,6 @@
                     }
                 },
                 error: (response) => {
-                    console.log(response);
                     if(response.responseJSON.errors){
                         $.each(response.responseJSON.errors, (key, value) => {
                             $(`#${key}`).addClass('is-invalid');

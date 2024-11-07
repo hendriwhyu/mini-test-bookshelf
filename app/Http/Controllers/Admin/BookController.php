@@ -43,7 +43,7 @@ class BookController extends Controller
             'cover' =>'image|mimes:jpeg,png,jpg,svg|max:2048',
         ]);
 
-        // try {
+        try {
             $file = $request->file('cover');
             $fileName = $file->hashName();
             Storage::disk('public')->putFileAs('covers_book', $file, $fileName);
@@ -63,12 +63,12 @@ class BookController extends Controller
                 'success' => true,
                 'message' => 'Book created successfully.',
             ]);
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Book could not be created.',
-        //     ], 500);
-        // }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Book could not be created.',
+            ], 500);
+        }
     }
 
     /**
@@ -110,7 +110,8 @@ class BookController extends Controller
             if ($book) {
                 $file = $request->file('cover');
                 if ($file) {
-                    Storage::delete('cover_book/', $book->cover);
+                    Storage::disk('public')->delete('covers_book/'. $book->cover);
+
                     $fileName = $file->hashName();
                     Storage::disk('public')->putFileAs('covers_book', $file, $fileName);
                     $book->cover = $fileName;
@@ -147,7 +148,7 @@ class BookController extends Controller
             $book = Book::find($id);
             if ($book) {
                 if($book->cover){
-                    Storage::delete('cover_book/', $book->cover);
+                    Storage::disk('public')->delete('covers_book/'. $book->cover);
                 }
                 $book->delete();
                 return response()->json([
@@ -161,6 +162,5 @@ class BookController extends Controller
                'message' => 'Book could not be deleted.',
             ]);
         }
-
     }
 }

@@ -124,7 +124,6 @@
                     }
                 },
                 error: (response) => {
-                    console.log(response);
                     if(response.responseJSON.errors){
                         $.each(response.responseJSON.errors, (key, value) => {
                             $(`#${key}`).addClass('is-invalid');
