@@ -1,7 +1,6 @@
 @extends('layouts.dashboard')
 
 @push('styles')
-    <!-- Custom styles for this page -->
     <link href={{asset("vendor/datatables/dataTables.bootstrap4.min.css")}} rel="stylesheet">
 @endpush
 
@@ -39,8 +38,10 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $book->title }}</td>
                             <td>{{ $book->author }}</td>
-                            <td>{{ $book->year }}</td>
+                            <td>{{ Carbon\Carbon::parse($book->release_date)->year }}</td>
                             <td>
+                                <a href="{{ route('books.show', $book->id) }}" class="btn btn-sm btn-secondary shadow-sm gap-2"><i
+                                        class="fas fa-eye"></i></a>
                                 <a href="{{ route('books.edit', $book->id) }}" class="btn btn-sm btn-primary shadow-sm gap-2"><i
                                         class="fas fa-pencil-alt"></i></a>
                                 <button class="btn btn-sm btn-danger shadow-sm gap-2" data-id="{{ $book->id }}"><i class="fas fa-trash"></i></button>
@@ -70,15 +71,17 @@
 
      <script>
          $(document).ready(function () {
-            $('.btn-danger').click((e) => {
+            $('.btn-danger').click(function(e) {
                 e.preventDefault();
-                let bookId = $('.btn-danger').attr("data-id");
+
+                let bookId = $(this).data('id');
 
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
                     icon: 'warning',
                     showCancelButton: true,
+                    reverseButtons: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!'

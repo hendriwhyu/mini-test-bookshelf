@@ -36,13 +36,14 @@ class BookController extends Controller
         $validate = $request->validate([
             'title' =>'required|string|max:255',
             'category_id' =>'required|exists:categories,id',
-            'year' =>'required|numeric',
+            'release_date' => 'required|date',
+            'isbn' => 'string|max:255',
             'author' =>'required|string|max:255',
             'publisher' =>'required|string|max:255',
             'cover' =>'image|mimes:jpeg,png,jpg,svg|max:2048',
         ]);
 
-        try {
+        // try {
             $file = $request->file('cover');
             $fileName = $file->hashName();
             Storage::disk('public')->putFileAs('covers_book', $file, $fileName);
@@ -50,7 +51,8 @@ class BookController extends Controller
             Book::create([
                 'title' => $validate['title'],
                 'category_id' => $validate['category_id'],
-                'year' => $validate['year'],
+                'isbn' => $validate['isbn'],
+                'release_date' => $validate['release_date'],
                 'cover' => $fileName,
                 'author' => $validate['author'],
                 'publisher' => $validate['publisher'],
@@ -61,12 +63,12 @@ class BookController extends Controller
                 'success' => true,
                 'message' => 'Book created successfully.',
             ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Book could not be created.',
-            ]);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Book could not be created.',
+        //     ], 500);
+        // }
     }
 
     /**
@@ -74,7 +76,8 @@ class BookController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $book = Book::findOrFail($id);
+        return view('admin.books.detail', compact('book'));
     }
 
     /**
@@ -82,7 +85,7 @@ class BookController extends Controller
      */
     public function edit(string $id)
     {
-        $book = Book::find($id);
+        $book = Book::findOrFail($id);
         $categories = Category::all();
         return view('admin.books.edit', compact('book', 'categories'));
     }
@@ -92,7 +95,47 @@ class BookController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validate = $request->validate([
+            'title' =>'required|string|max:255',
+            'category_id' =>'exists:categories,id',
+            'release_date' => 'required|date',
+            'isbn' => 'string|max:255',
+            'author' =>'required|string|max:255',
+            'publisher' => 'required|string|max:255',
+            'cover' =>'image|mimes:jpeg,png,jpg,svg|max:2048',
+        ]);
+
+        try {
+            $book = Book::find($id);
+            if ($book) {
+                $file = $request->file('cover');
+                if ($file) {
+                    Storage::delete('cover_book/', $book->cover);
+                    $fileName = $file->hashName();
+                    Storage::disk('public')->putFileAs('covers_book', $file, $fileName);
+                    $book->cover = $fileName;
+                }
+                $book->update([
+                    'title' => $validate['title'],
+                    'category_id' => $validate['category_id'],
+                    'isbn' => $validate['isbn'],
+                    'release_date' => $validate['release_date'],
+                    'author' => $validate['author'],
+                    'publisher' => $validate['publisher'],
+                    'description' => $request->description,
+                ]);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Book updated successfully.',
+                    'book' => $book,
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Book could not be updated.',
+            ], 500);
+        }
     }
 
     /**

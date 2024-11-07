@@ -22,6 +22,14 @@ class CategoriesSeeder extends Seeder
                 'name' => 'Non-fiction',
                 'description' => 'Non-fiction books',
             ],
+            [
+                'name' => 'Drama',
+                'description' => 'Drama books',
+            ],
+            [
+                'name' => 'Biography',
+                'description' => 'Biography books',
+            ],
         ];
 
         foreach ($categories as $category) {

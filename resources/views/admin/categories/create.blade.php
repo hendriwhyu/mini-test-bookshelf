@@ -35,7 +35,7 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        $('#categoryForm').submit((e) => {
+        $('#categoryForm').submit(function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -64,7 +64,6 @@
                     }
                 },
                 error: (response) => {
-                    console.log(response);
                     if(response.responseJSON.errors){
                         $.each(response.responseJSON.errors, (key, value) => {
                             $(`#${key}`).addClass('is-invalid');

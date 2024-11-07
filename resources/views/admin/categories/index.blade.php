@@ -16,7 +16,7 @@
     </div>
     <div class="card shadow mb-4">
         <div class="card-header py-3 justify-between">
-            <h6 class="m-0 font-weight-bold text-primary">Categories Book</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Table Categories</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -38,6 +38,8 @@
                             <td>{{ $category->created_at }}</td>
                             <td>{{ $category->updated_at }}</td>
                             <td>
+                                <a href="{{ route('categories.show', $category->id) }}" class="btn btn-sm btn-secondary shadow-sm gap-2"><i
+                                    class="fas fa-eye"></i></a>
                                 <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-sm btn-primary shadow-sm gap-2"><i
                                     class="fas fa-pencil-alt"></i></a>
                                 <button class="btn btn-sm btn-danger" data-id="{{ $category->id }}"><i class="fas fa-trash"></i></button>
@@ -67,49 +69,51 @@
      <script src={{asset("js/demo/datatables-demo.js")}}></script>
      <script>
         $(document).ready(function () {
-           $('.btn-danger').click((e) => {
-               e.preventDefault();
-               let categoryId = $('.btn-danger').attr("data-id");
+            $(document).on('click', '.btn-danger', function (e) {
+                e.preventDefault();
 
-               Swal.fire({
-                   title: 'Are you sure?',
-                   text: "You won't be able to revert this!",
-                   icon: 'warning',
-                   showCancelButton: true,
-                   confirmButtonColor: '#3085d6',
-                   cancelButtonColor: '#d33',
-                   confirmButtonText: 'Yes, delete it!'
-               }).then((result) => {
-                   if (result.isConfirmed) {
-                       $.ajaxSetup({
-                           headers: {
-                               'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                           }
-                       })
+                let categoryId = $(this).data('id');
 
-                       $.ajax({
-                           type: 'DELETE',
-                           url: `/admin/categories/${categoryId}`,
-                           success: (response) => {
-                               if(response.success){
-                                   Swal.fire({
-                                       title: "Success!",
-                                       text: response.message,
-                                       icon: "success",
-                                       confirmButtonText: "OK"
-                                   }).then(() => {
-                                       location.reload();
-                                   }).catch(() => {
-                                       $('.alert').removeClass('d-none');
-                                       $('.alert').addClass('alert-danger');
-                                       $('.alert').text(response.message);
-                                   });
-                               }
-                           }
-                       })
-                   }
-               })
-           })
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    reverseButtons: true,
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                            }
+                        })
+
+                        $.ajax({
+                            type: 'DELETE',
+                            url: `/admin/categories/${categoryId}`,
+                            success: (response) => {
+                                if(response.success){
+                                    Swal.fire({
+                                        title: "Success!",
+                                        text: response.message,
+                                        icon: "success",
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        location.reload();
+                                    }).catch(() => {
+                                        $('.alert').removeClass('d-none');
+                                        $('.alert').addClass('alert-danger');
+                                        $('.alert').text(response.message);
+                                    });
+                                }
+                            }
+                        })
+                    }
+                })
+            })
         });
     </script>
 @endpush

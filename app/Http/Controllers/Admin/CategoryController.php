@@ -57,7 +57,8 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('admin.categories.detail', compact('category'));
     }
 
     /**
@@ -65,7 +66,8 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -73,7 +75,26 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validate = $request->validate([
+            'name' =>'string|max:255',
+            'description' =>'string|max:255',
+        ]);
+
+        try {
+            $category = Category::find($id);
+            if ($category) {
+                $category->update($validate);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Category updated successfully.'
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category could not be updated.',
+            ]);
+        }
     }
 
     /**

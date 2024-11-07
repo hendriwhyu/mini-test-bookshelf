@@ -14,7 +14,11 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Category routes
     Route::resource('categories', CategoryController::class);
+
+    // Book routes
     Route::resource('books', BookController::class);
 })->name('admin');
 

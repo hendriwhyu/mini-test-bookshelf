@@ -31,8 +31,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="year">Year Book</label>
-                    <input type="number" class="form-control" id="year" name="year" placeholder="Input year book" value="{{ old('year') }}">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Input isbn number" value="{{ old('isbn') }}">
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="release_date">Release Book</label>
+                    <input type="date" class="form-control" id="release_date" name="release_date" placeholder="Input release book" value="{{ old('release_date') }}" max="{{ date('Y-m-d') }}">
                     <div class="invalid-feedback"></div>
                 </div>
 
@@ -80,8 +86,9 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        $('#bookForm').submit((e) => {
+        $('#bookForm').submit(function (e) {
             e.preventDefault();
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
@@ -107,6 +114,13 @@
                         }).then(() => {
                             window.location.href = "{{ route('books.index') }}";
                         });
+                    }else{
+                        Swal.fire({
+                            title: "Error!",
+                            text: response.message || response.responseJSON.message,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        })
                     }
                 },
                 error: (response) => {
@@ -118,10 +132,10 @@
                         })
                     }
 
-                    if(!response.success){
+                    if(!response.success || response.status == 422){
                         Swal.fire({
                             title: "Error!",
-                            text: response.message,
+                            text: response.message || response.responseJSON.message,
                             icon: "error",
                             confirmButtonText: "OK"
                         })
