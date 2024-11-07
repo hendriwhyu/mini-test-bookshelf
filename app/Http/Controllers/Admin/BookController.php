@@ -33,8 +33,6 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-
         $validate = $request->validate([
             'title' =>'required|string|max:255',
             'category_id' =>'required|exists:categories,id',
@@ -47,7 +45,7 @@ class BookController extends Controller
         try {
             $file = $request->file('cover');
             $fileName = $file->hashName();
-            Storage::move($file, 'cover_book/' . $fileName);
+            Storage::disk('public')->putFileAs('covers_book', $file, $fileName);
 
             Book::create([
                 'title' => $validate['title'],
@@ -84,7 +82,9 @@ class BookController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $book = Book::find($id);
+        $categories = Category::all();
+        return view('admin.books.edit', compact('book', 'categories'));
     }
 
     /**
