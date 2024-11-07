@@ -1,66 +1,86 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Full Stack Bookshelf Management Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a Laravel-based bookshelf management application where users can view, search, filter, and manage bookshelf records. The application provides a smooth user experience for both web and mobile platforms.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   **View and Search Categories & Books**: Users can view and search through the list of catetgories and books using a dynamic table.
+-   **Sort and Filter**: Data can be sorted and filtered based on the desired columns.
+-   **Add New Category**: A form with validations for adding new Category.
+-   **Update Category**: A form with validations for updating existing Category.
+-   **Detail Category**: Users can view about Category and their details.
+-   **Delete Category**: Users can delete a Category.
+-   **Add New Books**: A form with validations for adding new Books.
+-   **Update Book**: A form with validations for updating existing Book.
+-   **Detail Book**: Users can view about book and their details.
+-   **Delete Book**: Users can delete a Book.
+-   **Upload Image**: Users can upload an books cover.
+-   **Responsive Design**: The application works well on both mobile and desktop platforms.
+-   **Seeder for Dummy Data**: Includes a seeder to populate the database with dummy employee records.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Clone the repository
 
-## Learning Laravel
+```bash
+git clone https://github.com/hendriwhyu/mini-test-bookshelf.git
+cd <project-folder>
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 2. Install dependencies
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+composer install
+npm install
+npm run dev
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 3. Set up environment variables
 
-## Laravel Sponsors
+Copy the `.env.example` file to `.env` and adjust your environment variables as necessary (e.g., database credentials).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+cp .env.example .env
+```
 
-### Premium Partners
+### 4. Run database migrations and seeders
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Run the following command to create the database tables and seed them with dummy data:
 
-## Contributing
+```bash
+php artisan migrate --seed
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 5. Create storage link
 
-## Code of Conduct
+Laravel requires a symbolic link from `public/storage` to `storage/app/public` to serve uploaded files. Run the following command to create the link:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan storage:link
+```
 
-## Security Vulnerabilities
+### 6. Run the application
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan serve
+```
 
-## License
+Your application should now be up and running.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Technologies Used
+
+-   **Laravel**: Backend framework for building the application.
+-   **jQuery**: For dynamic interactions.
+-   **Bootstrap 5**: For responsive UI design.
+-   **SweetAlert2**: For displaying beautiful and customizable alert messages.
+-   **DataTables**: For displaying and searching the categories and books.
+
+## Resources
+
+-   [Laravel](https://select2.org/)
+-   [DataTables](https://datatables.net/)
+-   [SweetAlert2](https://www.daterangepicker.com/)
+
+## Author
+
+-   [Hendri Wahyu Perdana](https://github.com/hendriwhyu)
